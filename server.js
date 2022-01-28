@@ -1,6 +1,9 @@
 const express = require('express');
 const { animals } = require('./data/animals');
 
+//Enviromental Port
+const PORT = process.env.PORT || 3001;
+
 //Initiates Server
 const app = express();
 
@@ -12,9 +15,9 @@ app.get('/api/animals', (req, res) => {
     res.json(results);
 });
 
-
-app.listen(3001, () => {
-    console.log(`API server now on port 3001!`);
+//Uses the Enviromental Based Port
+app.listen(PORT, () => {
+    console.log(`API server now on port ${PORT}!`);
 });
 
 
