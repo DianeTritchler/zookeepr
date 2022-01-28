@@ -7,19 +7,11 @@ const PORT = process.env.PORT || 3001;
 //Initiates Server
 const app = express();
 
-app.get('/api/animals', (req, res) => {
-    let results = animals;
-    if (req.query) {
-        results = filterByQuery(req.query, results);
-    }
-    res.json(results);
-});
-
-//Uses the Enviromental Based Port
-app.listen(PORT, () => {
-    console.log(`API server now on port ${PORT}!`);
-});
-
+//FUNCTIONS
+function findById(id, animalsArray) {
+    const result = animalsArray.filter(animal => animal.id === id)[0];
+    return result;
+}
 
 function filterByQuery(query, animalsArray) {
     let personalityTraitsArray = [];
@@ -59,3 +51,30 @@ function filterByQuery(query, animalsArray) {
     // return the filtered results:
     return filteredResults;
 }
+
+//ROUTES
+app.get('/api/animals', (req, res) => {
+    let results = animals;
+    if (req.query) {
+        results = filterByQuery(req.query, results);
+    }
+    res.json(results);
+});
+
+app.get('/api/animals/:id', (req, res) => {
+    const result = findById(req.params.id, animals);
+    if (result) {
+        res.json(result);
+    } else {
+        res.send(404);
+    }
+});
+
+
+//Uses the Enviromental Based Port
+app.listen(PORT, () => {
+    console.log(`API server now on port ${PORT}!`);
+});
+
+
+
