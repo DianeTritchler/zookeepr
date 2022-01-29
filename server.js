@@ -5,8 +5,8 @@ const path = require('path');
 
 //Enviromental Port
 const PORT = process.env.PORT || 3001;
-
 const app = express();
+
 // parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
@@ -17,28 +17,6 @@ app.use(express.static('public'));
 
 
 //FUNCTIONS
-function findById(id, animalsArray) {
-    const result = animalsArray.filter(animal => animal.id === id)[0];
-    return result;
-}
-
-function createNewAnimal(body, animalsArray) {
-    const animal = body;
-    animalsArray.push(animal);
-    fs.writeFileSync(
-        path.join(__dirname, './data/animals.json'),
-        JSON.stringify({ animals: animalsArray }, null, 2)
-    );
-    return animal;
-}
-
-function createNewAnimal(body, animalsArray) {
-    const animal = body;
-    animalsArray.push(animal);
-
-    return animal;
-}
-
 function filterByQuery(query, animalsArray) {
     let personalityTraitsArray = [];
     // Note that we save the animalsArray as filteredResults here:
@@ -76,6 +54,20 @@ function filterByQuery(query, animalsArray) {
     }
     // return the filtered results:
     return filteredResults;
+}
+function findById(id, animalsArray) {
+    const result = animalsArray.filter(animal => animal.id === id)[0];
+    return result;
+}
+
+function createNewAnimal(body, animalsArray) {
+    const animal = body;
+    animalsArray.push(animal);
+    fs.writeFileSync(
+        path.join(__dirname, './data/animals.json'),
+        JSON.stringify({ animals: animalsArray }, null, 2)
+    );
+    return animal;
 }
 
 function validateAnimal(animal) {
@@ -127,6 +119,18 @@ app.post('/api/animals', (req, res) => {
 
 
 app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
