@@ -11,6 +11,9 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
 app.use(express.json());
+// allows use of css
+app.use(express.static('public'));
+
 
 
 //FUNCTIONS
@@ -123,7 +126,9 @@ app.post('/api/animals', (req, res) => {
 });
 
 
-
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
 
 //Uses the Enviromental Based Port
 app.listen(PORT, () => {
